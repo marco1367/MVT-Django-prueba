@@ -13,11 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# from xml.etree.ElementInclude import include
 from django.contrib import admin
-from django.urls import path
-from AppCoder.views import add_curso
+from django.urls import path, include
+# from AppCoder.views import add_curso ## Ya no es necesario, estructuramos urls por App's
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('add-curso/', add_curso)
+    # path('add-curso/', add_curso) ## Ya no se usa acá
+    path('AppCoder/', include('AppCoder.urls')) ##COn esta linea incluimos o "relacionamos" las url's de una App con el proyecto.
 ]
