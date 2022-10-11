@@ -1,6 +1,8 @@
+from ast import If
 from django.shortcuts import render
 from django.http import HttpResponse
-from AppCoder.models import Curso
+from AppCoder.models import *
+from AppCoder.forms import CursoFOrmulario, ProfesorFormulario
 
 # Create your views here.
 
@@ -30,3 +32,44 @@ def estudiantes(request):
 
 def entregables(request):
     return render(request, "AppCoder/entregables.html")
+
+def curspFormulario(request):
+    if request.method == 'POST':
+
+        miFormulario = CursoFOrmulario(request.POST)
+
+        if miFormulario.is_valid:
+
+            informacion = miFormulario.cleaned_data
+            curso = Curso(nombre=informacion['curso'], camada=informacion['camada'])
+            curso.save()
+            return render(request, "AppCoder/inicio.html") ##Vuelvo al inicio o a donde quiera
+    else:
+        miFormulario = CursoFOrmulario() #formulario vacio par acontruir el html
+    return render(request, "AppCoder/formulario.html", {"miFormulario":miFormulario})
+
+
+def profesorFormulario(request):
+    if request.method == 'POST':
+
+        miFormulario = ProfesorFormulario(request.POST)
+
+        if miFormulario.is_valid:
+            print(miFormulario)
+
+            informacion = miFormulario.cleaned_data
+            profesor = Profesor(
+                nombre=informacion['nombre'], 
+                apellido=informacion['apellido'],
+                email=informacion['email'],
+                profesion=informacion['profesion']
+            )
+            profesor.save()
+            return render(request, "AppCoder/inicio.html") ##Vuelvo al inicio o a donde quiera
+    else:
+        miFormulario = ProfesorFormulario() #formulario vacio par acontruir el html
+    return render(request, "AppCoder/formulario-profesor.html", {"miFormulario":miFormulario})
+
+
+def busquedaCamada(request):
+    pass
